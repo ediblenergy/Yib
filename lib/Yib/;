@@ -1,0 +1,21 @@
+package Yib::Sequencer;
+use Moo;
+use IO::Async::Loop::EV;
+use IO::Async::Loop;
+use IO::Async::Routine;
+
+has keyboard => ( 
+    is => 'lazy'
+);
+
+has loop => ( 
+    is => 'ro',
+    default => sub { IO::Async::Loop->new },
+);
+
+
+sub _build_keyboard {
+    my $self = shift;
+    my $keyboard = Yib::Input::Keyboard->new( loop => $self->loop )
+}
+1;
