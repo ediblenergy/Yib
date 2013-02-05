@@ -8,9 +8,12 @@ sub wav {
 }
 my $cfg = {
     keymap => {
-        w => wav('youraslacker')
+        w => wav('youraslacker'),
+        a => wav('yourturn'),
+        s => wav('intothefuture2'),
+        d => wav('121gigawatts'),
     }
 };
-my $yib = Yib::Sequencer->new;
+my $yib = Yib::Sequencer->new( config => $cfg);
 $yib->run;
     

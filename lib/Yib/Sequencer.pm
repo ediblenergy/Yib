@@ -5,6 +5,8 @@ use IO::Async::Loop;
 use IO::Async::Routine;
 use Data::Dumper::Concise;
 use Yib::Input::Keyboard;
+use Yib::Soundbank;
+
 has keyboard => ( 
     is => 'lazy'
 );
@@ -19,7 +21,13 @@ has config => (
     required => 1,
 );
 
+has soundbank => (
+    is => 'lazy'
+);
 
+sub _build_soundbank {
+    Yib::Soundbank->new;
+}
 sub _build_keyboard {
     my $self = shift;
     my $keyboard = Yib::Input::Keyboard->new( 
@@ -34,7 +42,8 @@ sub _build_keyboard {
 sub key_down {
     my($self,$ref) = @_;
     my $key = $$ref;
-    warn $self->config->{keymap}{$key};
+    my $wav = $self->config->{keymap}{$key};
+    $self->soundbank->play_wav($wav);
 }
 
 sub run {
