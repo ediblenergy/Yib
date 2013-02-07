@@ -37,6 +37,11 @@ has pattern_length => (
     default => sub { 16 },
 );
 
+has patterns => (
+    is => 'ro',
+    default => sub { [] },
+);
+
 has timer => ( is => 'lazy' );
 
 has interval => ( is => 'lazy' );
@@ -95,40 +100,53 @@ sub round {
 my ($bassdrum_pattern,$snare_pattern,$hihat_pattern);
 sub tick {
     my $self = shift;
-    $time_zero ||= Time::HiRes::time(); #kick off ze timer
-    my $new_t = Time::HiRes::time();
-    my $elapsed = $new_t - $time_zero;
-    my $i = round( $elapsed / $self->interval) ;
-    my $step = $i % $self->pattern_length;
-    my $cur_step = ( 2 ** $step );
-    if( $bassdrum_pattern->pattern & $cur_step ) {
-        $self->soundbank->play_wav( $self->config->{keymap}{a}, 1 );
-    }
-    if( $snare_pattern->pattern & $cur_step ) {
-        $self->soundbank->play_wav( $self->config->{keymap}{b}, 2 );
-    }
+    $time_zero ||= Time::HiRes::time();    #kick off ze timer
+    my $new_t    = Time::HiRes::time();
+    my $elapsed  = $new_t - $time_zero;
+    my $i        = round( $elapsed / $self->interval );
+    my $step     = $i % $self->pattern_length;
+    my $cur_step = ( 2**$step );
+    for ( @{ $self->patterns } ) {
 
-    if( $hihat_pattern->pattern & $cur_step ) {
-        $self->soundbank->play_wav( $self->config->{keymap}{c}, 3 );
+        if ( $_->pattern & $cur_step ) {
+            $self->soundbank->play_wav(
+                $self->config->{keymap}{ $_->trigger },
+                $_->channel
+            );
+        }
     }
-#    $self->soundbank->play_wav( $self->config->{keymap}{i}, 3 );
-#    if( !( $i % 2) ) {
-#    }
-#    if( !( $i % 4) ) {
-#        $self->soundbank->play_wav( $self->config->{keymap}{o}, 2 );
-#    }
 }
 sub run {
     my $self = shift;
     warn "init keyboard: ".$self->keyboard;
     warn 'init timer';
-    $bassdrum_pattern = Yib::Pattern->new( pattern => 0b1000_1100_0010_0010 );
-    $snare_pattern    = Yib::Pattern->new( pattern => 0b0100_1000_0000_1000 );
-    $hihat_pattern    = Yib::Pattern->new( pattern => 0b0010_0010_0010_0010 );
+    push(
+          @{ $self->patterns } =>
+            Yib::Pattern->new(
+                               pattern => 0b1000_1100_0010_0010,
+                               trigger => 'a',
+                               channel => 1,
+                               name    => 'bassdrum',
+                             ) );
 
+    push(
+          @{ $self->patterns } =>
+            Yib::Pattern->new(
+                               pattern => 0b0100_1000_0000_1000,
+                               trigger => 'b',
+                               channel => 2,
+                               name    => 'snare',
+                             ) );
+    push(
+          @{ $self->patterns } =>
+            Yib::Pattern->new(
+                               pattern => 0b1010_1010_1010_1010,
+                               trigger => 'c',
+                               channel => 3,
+                               name    => 'hihat',
+                             ) );
     $self->timer;
     $self->loop->add( $self->timer );
-
     $self->loop->run;
 }
 1;
