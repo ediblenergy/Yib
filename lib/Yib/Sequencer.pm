@@ -87,12 +87,12 @@ sub tick {
     my $new_t = Time::HiRes::time();
     my $elapsed = $new_t - $time_zero;
     my $i = round( $elapsed / $self->interval );
-    $self->soundbank->play_wav( $self->config->{keymap}{a}, 3 );
+    $self->soundbank->play_wav( $self->config->{keymap}{i}, 3 );
     if( !( $i % 2) ) {
-        $self->soundbank->play_wav( $self->config->{keymap}{c}, 1 );
+        $self->soundbank->play_wav( $self->config->{keymap}{a}, 1 );
     }
     if( !( $i % 4) ) {
-        $self->soundbank->play_wav( $self->config->{keymap}{d}, 2 );
+        $self->soundbank->play_wav( $self->config->{keymap}{o}, 2 );
     }
 }
 sub run {

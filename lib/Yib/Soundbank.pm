@@ -24,6 +24,7 @@ unless ( SDL::Mixer::open_audio( 44100, AUDIO_S16SYS, 2, 500 ) == 0 ) {
 }
 
 my %cache;
+    warn my $prev_volume = SDL::Mixer::Channels::volume( 3, 20 );
 sub play_wav {
     my ( $self, $file, $channel ) = @_;
     $channel ||= -1;
