@@ -9,6 +9,8 @@ use Yib::Soundbank;
 use Time::Hires;
 use Yib::Pattern;
 
+use Devel::REPL;
+
 has keyboard => ( 
     is => 'lazy'
 );
@@ -123,7 +125,7 @@ sub run {
     push(
           @{ $self->patterns } =>
             Yib::Pattern->new(
-                               pattern => 0b1000_1100_0010_0010,
+                               pattern => 0b1000_1000_0010_0010,
                                trigger => 'a',
                                channel => 1,
                                name    => 'bassdrum',

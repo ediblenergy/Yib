@@ -1,3 +1,4 @@
+#!/usr/bin/env perl
 use strictures 1;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
@@ -14,7 +15,6 @@ my @keys = (("a".."z"),("A".."Z"));
 my $i = 0;
 my %map;
 for(qw[ a b c ]) {
-#while( my $f = shift @files ) {
     $map{$_} = shift(@ARGV);
 }
 warn Dumper \%map;
@@ -23,12 +23,11 @@ my $cfg = {
         %map,
     }
 };
-my $yib = Yib::Sequencer->new( config => $cfg, bpm => 120);
+my $yib = Yib::Sequencer->new( config => $cfg, bpm => 110);
 eval {
     $yib->run;
-    warn 'runnin';
 };
-#`stty sane`;
 if($@) {
+    `stty sane`;
     die $@;
 }
