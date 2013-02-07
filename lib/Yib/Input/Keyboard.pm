@@ -59,19 +59,4 @@ sub init {
         }
     );
 }
-#sub run {
-#    my $self = shift;
-#    my $loop = $self->loop;
-#    my $keyout_ch = $self->keyout_ch;
-#    my $keyboard_listener = $self->keyboard_listener;
-#    $loop->add($keyboard_listener);
-#    $keyout_ch->configure(
-#        on_recv => sub {
-#            my ( $ch, $ref ) = @_;
-#            warn "received: $$ref";
-#        }
-#    );
-#    warn 'running loop...';
-#    $loop->run;
-#}
 1;

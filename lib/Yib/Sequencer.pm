@@ -44,6 +44,7 @@ sub key_down {
     my $key = $$ref;
     my $wav = $self->config->{keymap}{$key};
     $self->soundbank->play_wav($wav);
+#    $self->soundbank->play_music($wav);
 }
 
 sub run {
