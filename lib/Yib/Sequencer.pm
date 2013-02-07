@@ -98,7 +98,6 @@ sub tick {
     $time_zero ||= Time::HiRes::time(); #kick off ze timer
     my $new_t = Time::HiRes::time();
     my $elapsed = $new_t - $time_zero;
-    warn $self->interval;
     my $i = round( $elapsed / $self->interval) ;
     my $step = $i % $self->pattern_length;
     my $cur_step = ( 2 ** $step );
