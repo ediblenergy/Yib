@@ -23,7 +23,7 @@ sub play_wav {
      
     my $chunk = SDL::Mixer::Samples::load_WAV_RW($rwops, 0) or die SDL::get_error();
      
-    SDL::Mixer::Channels::play_channel(-1, $chunk, -1);
+    SDL::Mixer::Channels::play_channel(-1, $chunk, -0);
     SDL::delay(2000);
 }
 

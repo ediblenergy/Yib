@@ -13,7 +13,7 @@ sub mp3 {
 my @keys = (("a".."z"),("A".."Z"));
 my $i = 0;
 my %map;
-my @files = grep { /wav/i } <$data_dir/wav/kanye/*>;
+my @files = grep { /wav/i } <$data_dir/drumkit/*>;
 for(@keys) {
 #while( my $f = shift @files ) {
     $map{$_} = $files[$i++];
@@ -24,11 +24,12 @@ my $cfg = {
         %map,
     }
 };
-my $yib = Yib::Sequencer->new( config => $cfg);
+my $yib = Yib::Sequencer->new( config => $cfg, bpm => 240);
 eval {
     $yib->run;
+    warn 'runnin';
 };
-`stty sane`;
+#`stty sane`;
 if($@) {
     die $@;
 }
